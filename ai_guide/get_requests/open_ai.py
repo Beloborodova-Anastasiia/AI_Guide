@@ -1,4 +1,4 @@
-import os
+# import os
 import openai
 from dotenv import load_dotenv
 
@@ -21,7 +21,7 @@ class OpenAiInterract:
                 {"role": "system", "content": system_msg},
                 {"role": "user", "content": user_msg}
             ],
-            temperature=0.4,
+            temperature=0.6,
         )
 
         return response["choices"][0]['message']['content']

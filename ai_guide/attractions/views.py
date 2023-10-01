@@ -9,55 +9,59 @@ from rest_framework import status
 from get_requests.open_ai import OpenAiInterract
 
 from .consts import SESTEM_MSG
-from .models import Attraction
-from .serializers import QuirySerializer, AttractionSerializer
+from .models import Attraction, MisspelledNames
+from .serializers import QuerySerializer, AttractionSerializer
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 class ApiAnswers(APIView):
 
     def post(self, request):
-        quiry_serializer = QuirySerializer(data=request.data)
+        query_serializer = QuerySerializer(data=request.data)
 
-        if quiry_serializer.is_valid():
-            quiry_name = quiry_serializer.data['quiry']
+        if query_serializer.is_valid():
+            query_name = query_serializer.data['query']
             attractions = Attraction.objects.filter(
-                Q(misataken_names__contains=quiry_name)
-                | Q(object_name=quiry_name)
+                object_name=query_name
             )
-
+            attractions_misspeled = MisspelledNames.objects.filter(
+                misspelled_name=query_name
+            )
             if attractions.exists():
                 attraction = attractions.first()
-                print(attraction.object_name)
-                
-
+                # print('From Attractions', attraction)
+            elif attractions_misspeled.exists():
+                attraction_misspeled = attractions_misspeled.first()
+                attraction = attraction_misspeled.attraction
+                # print('From MisspelledNames', attraction)
             else:
                 openai_client = OpenAiInterract(OPENAI_API_KEY)
-                message = f'Tell me about {quiry_name}'
+                message = f'Tell me about {query_name}'
                 response = openai_client.get_answer_openai(
                     system_msg=SESTEM_MSG,
                     user_msg=message
                 )
                 decode_response = json.loads(response)
-                attraction = Attraction.objects.create(
+                Attraction.objects.get_or_create(
                     object_name=decode_response['object_name'],
                     location=decode_response['location'],
-                    content=decode_response['content']
                 )
-                if quiry_name != decode_response['object_name']:
-                    attraction.misataken_names.append(quiry_name)
-            # print(attraction.object_name)
-            # attr = Attraction.objects.all()
-            # reply_serializer = AttractionSerializer(attraction)
-            # print(reply_serializer.data)
-            # data = {
-            #     'quiry': message,
-            #     'response': response,
-            # }
-            return Response('data', status=status.HTTP_200_OK)
-            # return Response(reply_serializer.data)
+                attraction = Attraction.objects.get(
+                    object_name=decode_response['object_name'],
+                    location=decode_response['location'],
+                )
+                attraction.content = decode_response['content']
+                attraction.save()
+                if decode_response['object_name'] != query_name:
+                    MisspelledNames.objects.create(
+                        misspelled_name=query_name,
+                        attraction=attraction
+                    )
+                # print('From open_AI', attraction)
+            reply_serializer = AttractionSerializer(attraction)
+            return Response(reply_serializer.data)
 
         return Response(
-            quiry_serializer.errors,
+            query_serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )

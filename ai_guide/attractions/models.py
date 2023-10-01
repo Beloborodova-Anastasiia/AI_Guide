@@ -1,5 +1,3 @@
-import json
-
 from django.db import models
 
 
@@ -18,22 +16,24 @@ class Attraction(models.Model):
         max_length=1000,
         verbose_name='Description',
     )
-    misataken_names = models.CharField(
-        max_length=500,
-        blank=True,
-        null=True
-    )
-
-    # def set_misataken_name(self, name):
-    #     if self.misataken_names:
-    #         misataken_names = self.misataken_names
-    #         misataken_names.append(name)
-    #     else:
-    #         self.misataken_name = json.dumps(name)
-    #     self.misataken_name = json.dumps(misataken_names)
-
-    def get_misataken_name(self):
-        return json.loads(self.misataken_name)
 
     def __str__(self):
         return self.object_name
+
+
+class MisspelledNames(models.Model):
+    misspelled_name = models.CharField(
+        max_length=254,
+        unique=True,
+        db_index=True,
+        verbose_name='Misspelled name',
+    )
+    attraction = models.ForeignKey(
+        Attraction,
+        on_delete=models.CASCADE,
+        related_name='attraction',
+        verbose_name='Attraction',
+    )
+
+    def __str__(self):
+        return self.misspelled_name
