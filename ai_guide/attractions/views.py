@@ -1,18 +1,18 @@
 import json
 import os
 
-from django.db.models import Q
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from get_requests.open_ai import OpenAiInterract
 
 from .consts import SESTEM_MSG
 from .models import Attraction, MisspelledNames
-from .serializers import QuerySerializer, AttractionSerializer
+from .serializers import AttractionSerializer, QuerySerializer
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
 
 class ApiAnswers(APIView):
 

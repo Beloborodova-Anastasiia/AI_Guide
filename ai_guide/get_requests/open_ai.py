@@ -25,11 +25,3 @@ class OpenAiInterract:
         )
 
         return response["choices"][0]['message']['content']
-
-
-# openai_obj = OpenAiInterract(OPENAI_API_KEY)
-
-# items = openai_obj.get_answer_openai(
-#     'Write friendly way',
-#     'Write "Hello world" in Chinees and French')
-# print(items)
