@@ -1,3 +1,4 @@
+MESSAGE = 'Tell me about'
 SESTEM_MSG = """
 You are a tour guide. Tell about a touristic attraction in a concise and
 simple way, provide factual info. The information should start with the object
@@ -12,4 +13,4 @@ content: "",
 }
 '''
 """
-TEMPRITURE = 0.6
+TEMPERATURE = 0.6

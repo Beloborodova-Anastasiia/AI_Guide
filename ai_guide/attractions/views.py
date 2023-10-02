@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from get_requests.open_ai import OpenAiInterract
 
-from .consts import SESTEM_MSG, TEMPRITURE
+from .consts import MESSAGE, SESTEM_MSG, TEMPERATURE
 from .models import Attraction, MisspelledNames
 from .serializers import AttractionSerializer, QuerySerializer
 
@@ -29,36 +29,15 @@ class ApiAnswers(APIView):
             )
             if attractions.exists():
                 attraction = attractions.first()
-                # print('From Attractions', attraction)
             elif attractions_misspeled.exists():
                 attraction_misspeled = attractions_misspeled.first()
                 attraction = attraction_misspeled.attraction
-                # print('From MisspelledNames', attraction)
             else:
-                openai_client = OpenAiInterract(OPENAI_API_KEY)
-                message = f'Tell me about {query_name}'
-                response = openai_client.get_answer_openai(
-                    system_msg=SESTEM_MSG,
-                    user_msg=message,
-                    temperature=TEMPRITURE
+                openia_reply = self.get_openia_response(query_name)
+                attraction = self.create_attraction_obj(
+                    openia_reply, query_name
                 )
-                decode_response = json.loads(response)
-                Attraction.objects.get_or_create(
-                    object_name=decode_response['object_name'],
-                    location=decode_response['location'],
-                )
-                attraction = Attraction.objects.get(
-                    object_name=decode_response['object_name'],
-                    location=decode_response['location'],
-                )
-                attraction.content = decode_response['content']
-                attraction.save()
-                if decode_response['object_name'] != query_name:
-                    MisspelledNames.objects.create(
-                        misspelled_name=query_name,
-                        attraction=attraction
-                    )
-                # print('From open_AI', attraction)
+
             reply_serializer = AttractionSerializer(attraction)
             return Response(reply_serializer.data)
 
@@ -66,3 +45,33 @@ class ApiAnswers(APIView):
             query_serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+    def get_openia_response(self, query: str) -> json:
+        openai_client = OpenAiInterract(OPENAI_API_KEY)
+        message = MESSAGE + f'{query}'
+        response = openai_client.get_answer_openai(
+            system_msg=SESTEM_MSG,
+            user_msg=message,
+            temperature=TEMPERATURE
+        )
+        return json.loads(response)
+
+    def create_attraction_obj(
+            self, decode_response: json, query_name: str
+    ) -> Attraction:
+        Attraction.objects.get_or_create(
+            object_name=decode_response['object_name'],
+            location=decode_response['location'],
+        )
+        attraction = Attraction.objects.get(
+            object_name=decode_response['object_name'],
+            location=decode_response['location'],
+        )
+        attraction.content = decode_response['content']
+        attraction.save()
+        if decode_response['object_name'] != query_name:
+            MisspelledNames.objects.create(
+                misspelled_name=query_name,
+                attraction=attraction
+            )
+        return attraction
