@@ -14,14 +14,14 @@ class OpenAiInterract:
         self.openai_api_key = openai_api_key
         openai.api_key = self.openai_api_key
 
-    def get_answer_openai(self, system_msg, user_msg):
+    def get_answer_openai(self, system_msg, user_msg, temperature=0.4):
         response = openai.ChatCompletion.create(
             model=self.MODEL,
             messages=[
                 {"role": "system", "content": system_msg},
                 {"role": "user", "content": user_msg}
             ],
-            temperature=0.6,
+            temperature=temperature,
         )
 
         return response["choices"][0]['message']['content']

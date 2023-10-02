@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from get_requests.open_ai import OpenAiInterract
 
-from .consts import SESTEM_MSG
+from .consts import SESTEM_MSG, TEMPRITURE
 from .models import Attraction, MisspelledNames
 from .serializers import AttractionSerializer, QuerySerializer
 
@@ -39,7 +39,8 @@ class ApiAnswers(APIView):
                 message = f'Tell me about {query_name}'
                 response = openai_client.get_answer_openai(
                     system_msg=SESTEM_MSG,
-                    user_msg=message
+                    user_msg=message,
+                    temperature=TEMPRITURE
                 )
                 decode_response = json.loads(response)
                 Attraction.objects.get_or_create(

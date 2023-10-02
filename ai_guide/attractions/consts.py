@@ -12,3 +12,4 @@ content: "",
 }
 '''
 """
+TEMPRITURE = 0.6
