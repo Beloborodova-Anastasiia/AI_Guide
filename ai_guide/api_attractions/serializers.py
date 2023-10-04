@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Attraction
+from attractions.models import Attraction
 
 
 class QuerySerializer(serializers.Serializer):
