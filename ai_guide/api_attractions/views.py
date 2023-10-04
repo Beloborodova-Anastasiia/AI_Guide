@@ -5,11 +5,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from get_requests.open_ai import OpenAiInterract
+from requests.open_ai import OpenAiInterract
 
-from .consts import MESSAGE, SESTEM_MSG, TEMPERATURE
-from .models import Attraction, MisspelledNames
-from .serializers import AttractionSerializer, QuerySerializer
+from api_attractions.consts import MESSAGE, SESTEM_MSG, TEMPERATURE
+from attractions.models import Attraction, MisspelledNames
+from api_attractions.serializers import AttractionSerializer, QuerySerializer
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
