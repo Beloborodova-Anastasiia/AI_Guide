@@ -4,12 +4,15 @@ import os
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from dotenv import load_dotenv
 
-from requests.open_ai import OpenAiInterract
+from utilits.open_ai import OpenAiInterract
 
 from api_attractions.consts import MESSAGE, SESTEM_MSG, TEMPERATURE
 from attractions.models import Attraction, MisspelledNames
 from api_attractions.serializers import AttractionSerializer, QuerySerializer
+
+load_dotenv()
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
@@ -18,7 +21,6 @@ class ApiAnswers(APIView):
 
     def post(self, request):
         query_serializer = QuerySerializer(data=request.data)
-
         if query_serializer.is_valid():
             query_name = query_serializer.data['query']
             attractions = Attraction.objects.filter(
