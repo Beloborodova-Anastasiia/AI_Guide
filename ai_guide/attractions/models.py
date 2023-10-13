@@ -16,6 +16,10 @@ class Attraction(models.Model):
         max_length=1000,
         verbose_name='Description',
     )
+    audio = models.FileField(
+        upload_to='audio/',
+        blank=True
+    )
 
     def __str__(self):
         return self.object_name
