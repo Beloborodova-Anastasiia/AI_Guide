@@ -1,0 +1,3 @@
+REGION_NAME='eu-west-2'
+VOICE_ID = 'Brian'
+OUTPUT_FORMAT='mp3'

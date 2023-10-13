@@ -36,7 +36,7 @@ class ApiAnswers(APIView):
                 attraction = self.create_attraction_obj(
                     atrraction_info, query_name
                 )
-
+            self.get_awas_polly_response(attraction)
             reply_serializer = AttractionSerializer(attraction)
             return Response(reply_serializer.data)
 
@@ -58,9 +58,27 @@ class ApiAnswers(APIView):
         )
         attraction.content = attraction_info.content
         attraction.save()
+        # self.get_awas_polly_response(attraction)
         if attraction_info.object_name != query_name:
             MisspelledNames.objects.create(
                 misspelled_name=query_name,
                 attraction=attraction
             )
         return attraction
+
+    def get_awas_polly_response(self, attraction):
+        print('!!!!!!')
+        polly = AwsPollyInterract()
+        file = polly.get_voice(
+            voice=VOICE_ID,
+            format=OUTPUT_FORMAT,
+            region_name=REGION_NAME,
+            file=MEDIA_PATH + f'{attraction.object_name}.{OUTPUT_FORMAT}',
+            text=attraction.content
+        )
+        print(file, '!!!!!!!!!')
+        # attraction.audio = file
+        # attraction.save()
+        # with open(file, 'rb') as fi:
+        #     self.my_file = File(fi, name=os.path.basename(fi.name))
+        #     self.save()
