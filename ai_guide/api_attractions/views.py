@@ -1,10 +1,14 @@
+from dotenv import load_dotenv
 import json
 import os
 
+from django.core.files import File
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from dotenv import load_dotenv
+
 
 from open_ai_utils.open_ai import OpenAiInterract
 from aws_utils.aws_polly import AwsPollyInterract
@@ -13,6 +17,7 @@ from api_attractions.consts import (MESSAGE, SESTEM_MSG, TEMPERATURE, OUTPUT_FOR
                                     REGION_NAME, MEDIA_PATH)
 from attractions.models import Attraction, MisspelledNames
 from api_attractions.serializers import AttractionSerializer, QuerySerializer
+from ai_guide.settings import MEDIA_ROOT
 
 load_dotenv()
 
@@ -41,7 +46,6 @@ class ApiAnswers(APIView):
                 attraction = self.create_attraction_obj(
                     openia_reply, query_name
                 )
-            self.get_awas_polly_response(attraction)
             reply_serializer = AttractionSerializer(attraction)
             return Response(reply_serializer.data)
 
@@ -73,7 +77,7 @@ class ApiAnswers(APIView):
         )
         attraction.content = decode_response['content']
         attraction.save()
-        # self.get_awas_polly_response(attraction)
+        self.add_aws_polly_response_to_attraction(attraction)
         if decode_response['object_name'] != query_name:
             MisspelledNames.objects.create(
                 misspelled_name=query_name,
@@ -81,19 +85,32 @@ class ApiAnswers(APIView):
             )
         return attraction
 
-    def get_awas_polly_response(self, attraction):
-        print('!!!!!!')
+    def add_aws_polly_response_to_attraction(self, attraction):
         polly = AwsPollyInterract()
-        file = polly.get_voice(
+        file_name = attraction.object_name
+        returned_file = polly.get_voice(
             voice=VOICE_ID,
             format=OUTPUT_FORMAT,
             region_name=REGION_NAME,
-            file=MEDIA_PATH + f'{attraction.object_name}.{OUTPUT_FORMAT}',
+            file=f'{file_name}.{OUTPUT_FORMAT}',
             text=attraction.content
         )
-        print(file, '!!!!!!!!!')
-        # attraction.audio = file
-        # attraction.save()
-        # with open(file, 'rb') as fi:
-        #     self.my_file = File(fi, name=os.path.basename(fi.name))
-        #     self.save()
+    
+        with open(returned_file, 'rb') as file:
+            file_for_model = File(file)
+            attraction.audio = file_for_model
+            attraction.save()
+            file.close()
+            os.remove(returned_file)
+
+
+class GetAudio(APIView):
+
+    def get(self, request, id):
+        attraction = get_object_or_404(Attraction, id=id)
+        return FileResponse(attraction.audio.open())
+
+
+        
+
+

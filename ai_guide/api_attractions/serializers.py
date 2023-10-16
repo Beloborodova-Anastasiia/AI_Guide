@@ -22,5 +22,6 @@ class AttractionSerializer(serializers.ModelSerializer):
             'id',
             'object_name',
             'location',
+            'audio',
             'content',
         )

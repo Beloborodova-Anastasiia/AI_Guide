@@ -17,7 +17,7 @@ class Attraction(models.Model):
         verbose_name='Description',
     )
     audio = models.FileField(
-        upload_to='audio/',
+        upload_to='',
         blank=True
     )
 
