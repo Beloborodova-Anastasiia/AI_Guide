@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 
 # from utils.polly_config import REGION_NAME, VOICE_ID
+from ai_guide.settings import MEDIA_ROOT
 
 load_dotenv()
 # AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID'),
@@ -27,8 +28,9 @@ class AwsPollyInterract:
 
         if "AudioStream" in response:
             with closing(response['AudioStream']) as stream:
-                output = open(file, 'wb')
-                output.write(response['AudioStream'].read())
+                output = open(MEDIA_ROOT + '/' + file, 'wb')
+                output.write(stream.read())
                 output.close()
-        
-        return file
+
+        return output.name
+        # return os.getcwd()
