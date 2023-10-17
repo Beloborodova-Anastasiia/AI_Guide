@@ -33,4 +33,3 @@ class AwsPollyInterract:
                 output.close()
 
         return output.name
-        # return os.getcwd()
