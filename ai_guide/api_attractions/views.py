@@ -77,7 +77,6 @@ class ApiAnswers(APIView):
         )
         attraction.content = decode_response['content']
         attraction.save()
-        self.add_aws_polly_response_to_attraction(attraction)
         if decode_response['object_name'] != query_name:
             MisspelledNames.objects.create(
                 misspelled_name=query_name,
@@ -85,30 +84,46 @@ class ApiAnswers(APIView):
             )
         return attraction
 
-    def add_aws_polly_response_to_attraction(self, attraction):
+    # def get_aws_polly_response_to_attraction(self, attraction):
+    # ''' 
+    # Function for generation audio in aws_polly and save it 
+    # in model attraction field 
+    # '''
+    #     polly = AwsPollyInterract()
+    #     file_name = attraction.object_name
+    #     returned_file = polly.get_voice(
+    #         voice=VOICE_ID,
+    #         format=OUTPUT_FORMAT,
+    #         region_name=REGION_NAME,
+    #         file=f'{file_name}.{OUTPUT_FORMAT}',
+    #         text=attraction.content
+    #     )
+    
+    #     with open(returned_file, 'rb') as file:
+    #         file_for_model = File(file)
+    #         attraction.audio = file_for_model
+    #         attraction.save()
+    #         file.close()
+    #         os.remove(returned_file)
+
+    
+class GetAudio(APIView):
+
+    def get(self, request, id):
+        attraction = get_object_or_404(Attraction, id=id)
         polly = AwsPollyInterract()
         file_name = attraction.object_name
-        returned_file = polly.get_voice(
+        file_name = polly.get_voice(
             voice=VOICE_ID,
             format=OUTPUT_FORMAT,
             region_name=REGION_NAME,
             file=f'{file_name}.{OUTPUT_FORMAT}',
             text=attraction.content
         )
+        file = open(file_name, 'rb')
+        return FileResponse(file)
     
-        with open(returned_file, 'rb') as file:
-            file_for_model = File(file)
-            attraction.audio = file_for_model
-            attraction.save()
-            file.close()
-            os.remove(returned_file)
-
-
-class GetAudio(APIView):
-
-    def get(self, request, id):
-        attraction = get_object_or_404(Attraction, id=id)
-        return FileResponse(attraction.audio.open())
+   
 
 
         
