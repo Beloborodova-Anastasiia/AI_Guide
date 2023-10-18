@@ -1,6 +1,3 @@
-import json
-import os
-
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,7 +11,7 @@ from attractions.classes import AttractionInfo
 
 load_dotenv()
 
-openai_client = OpenAiClient()
+open_ai_client = OpenAiClient()
 
 
 class ApiAnswers(APIView):
@@ -36,7 +33,7 @@ class ApiAnswers(APIView):
                 attraction_misspeled = attractions_misspeled.first()
                 attraction = attraction_misspeled.attraction
             else:
-                atrraction_info =  openai_client.get_answer(query_name)
+                atrraction_info = open_ai_client.get_answer(query_name)
                 attraction = self.create_attraction_obj(
                     atrraction_info, query_name
                 )
