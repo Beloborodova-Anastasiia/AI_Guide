@@ -31,8 +31,6 @@ class OpenAiClient:
                 temperature=TEMPERATURE,
                 max_tokens=MAX_TOKENS
             )
-            print(response)
-            print(response["choices"][0]['message']['content'])
             serializer = AttractionInfoSerializer(
                 data=json.loads(response["choices"][0]['message']['content'])
             )
