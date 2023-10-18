@@ -3,6 +3,6 @@ class AttractionInfo:
         self.object_name = object_name
         self.location = location
         self.content = content
-    
+
     def __str__(self) -> str:
         return f'{self.object_name}, {self.location}'

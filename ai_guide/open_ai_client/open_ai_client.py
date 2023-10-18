@@ -12,6 +12,7 @@ load_dotenv()
 
 OPEN_AI_API_KEY = os.getenv('OPEN_AI_API_KEY')
 
+
 class OpenAiClient:
     MODEL = 'gpt-3.5-turbo'
 
@@ -44,8 +45,9 @@ class OpenAiClient:
                 # return response["choices"][0]['message']['content']
                 return attraction_info
             else:
-                raise serializers.ValidationError('Open_AI respons is not correct')              
+                raise serializers.ValidationError(
+                    'Open_AI respons is not correct'
+                )
 
-        except:
+        except Exception:
             raise Exception('No answer from Open_AI or answer is not correct')
-
