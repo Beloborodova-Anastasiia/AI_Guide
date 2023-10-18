@@ -6,21 +6,22 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from dotenv import load_dotenv
 
-from utilits.open_ai import OpenAiInterract
+from open_ai_client.open_ai_client import OpenAiClient
 
-from api_attractions.consts import MESSAGE, SESTEM_MSG, TEMPERATURE
 from attractions.models import Attraction, MisspelledNames
 from api_attractions.serializers import AttractionSerializer, QuerySerializer
+from attractions.classes import AttractionInfo
 
 load_dotenv()
 
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+openai_client = OpenAiClient()
 
 
 class ApiAnswers(APIView):
 
     def post(self, request):
         query_serializer = QuerySerializer(data=request.data)
+
         if query_serializer.is_valid():
             query_name = query_serializer.data['query']
             attractions = Attraction.objects.filter(
@@ -35,9 +36,9 @@ class ApiAnswers(APIView):
                 attraction_misspeled = attractions_misspeled.first()
                 attraction = attraction_misspeled.attraction
             else:
-                openia_reply = self.get_openia_response(query_name)
+                atrraction_info =  openai_client.get_answer(query_name)
                 attraction = self.create_attraction_obj(
-                    openia_reply, query_name
+                    atrraction_info, query_name
                 )
 
             reply_serializer = AttractionSerializer(attraction)
@@ -48,30 +49,20 @@ class ApiAnswers(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    def get_openia_response(self, query: str) -> json:
-        openai_client = OpenAiInterract(OPENAI_API_KEY)
-        message = MESSAGE + f'{query}'
-        response = openai_client.get_answer_openai(
-            system_msg=SESTEM_MSG,
-            user_msg=message,
-            temperature=TEMPERATURE
-        )
-        return json.loads(response)
-
     def create_attraction_obj(
-            self, decode_response: json, query_name: str
+            self, attraction_info: AttractionInfo, query_name: str
     ) -> Attraction:
         Attraction.objects.get_or_create(
-            object_name=decode_response['object_name'],
-            location=decode_response['location'],
+            object_name=attraction_info.object_name,
+            location=attraction_info.location,
         )
         attraction = Attraction.objects.get(
-            object_name=decode_response['object_name'],
-            location=decode_response['location'],
+            object_name=attraction_info.object_name,
+            location=attraction_info.location,
         )
-        attraction.content = decode_response['content']
+        attraction.content = attraction_info.content
         attraction.save()
-        if decode_response['object_name'] != query_name:
+        if attraction_info.object_name != query_name:
             MisspelledNames.objects.create(
                 misspelled_name=query_name,
                 attraction=attraction
