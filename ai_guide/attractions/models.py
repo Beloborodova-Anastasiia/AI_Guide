@@ -13,7 +13,7 @@ class Attraction(models.Model):
         verbose_name='Location',
     )
     content = models.TextField(
-        max_length=1000,
+        max_length=10000,
         verbose_name='Description',
     )
 
