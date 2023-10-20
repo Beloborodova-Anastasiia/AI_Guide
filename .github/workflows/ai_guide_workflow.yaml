@@ -15,7 +15,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.
+        python-version: 3.9
 
     - name: Install dependencies
       run: | 
@@ -23,10 +23,10 @@ jobs:
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
         pip install -r requirements.txt 
 
-    # - name: Test with flake8
-    #   run: |
-    #     cd ai_guide/
-    #     python -m flake8
+    - name: Test with flake8
+      run: |
+        cd ai_guide/
+        python -m flake8
 
 
   build_and_push_to_docker_hub:
