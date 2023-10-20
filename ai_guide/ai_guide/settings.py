@@ -27,7 +27,15 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['testserver', 'localhost', '127.0.0.1', '10.0.2.2']
+ALLOWED_HOSTS = [
+    'testserver',
+    'localhost',
+    '127.0.0.1',
+    '10.0.2.2',
+    '13.43.86.146',
+    '172.31.47.42',
+    'web'
+]
 
 
 # Application definition
