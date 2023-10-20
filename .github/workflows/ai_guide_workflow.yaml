@@ -2,7 +2,7 @@ name: Django-app workflow
 
 on: 
   push:
-    branches: [master, feature/docker]
+    branches: [master]
   pull_request:
     branches: [master]
 
