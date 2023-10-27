@@ -1,13 +1,12 @@
+from dotenv import load_dotenv
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from dotenv import load_dotenv
 
-from open_ai_client.open_ai_client import OpenAiClient
-
-from attractions.models import Attraction, MisspelledNames
 from api_attractions.serializers import AttractionSerializer, QuerySerializer
 from attractions.classes import AttractionInfo
+from attractions.models import Attraction, MisspelledNames
+from open_ai_client.open_ai_client import OpenAiClient
 
 load_dotenv()
 
