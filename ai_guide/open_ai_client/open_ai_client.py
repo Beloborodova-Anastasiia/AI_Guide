@@ -1,12 +1,13 @@
-import os
 import json
+import os
+
 import openai
 from dotenv import load_dotenv
 from rest_framework import serializers
 
+from api_attractions.consts import MAX_TOKENS, MESSAGE, SYSTEM_MSG, TEMPERATURE
 from attractions.classes import AttractionInfo
 from open_ai_client.serizalizers import AttractionInfoSerializer
-from api_attractions.consts import MAX_TOKENS, MESSAGE, SYSTEM_MSG, TEMPERATURE
 
 load_dotenv()
 
