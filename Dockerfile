@@ -8,7 +8,7 @@ COPY requirements.txt /app
 
 RUN pip install --upgrade pip
 
-RUN pip3 install -r requirements.txt --no-cache-dir
+RUN pip install -r requirements.txt --no-cache-dir
 
 COPY ai_guide/ /app
 
