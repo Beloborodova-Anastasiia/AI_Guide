@@ -2,7 +2,14 @@ name: Django-app workflow
 
 on: 
   push:
-    branches: [master]
+    branches: 
+      - main
+      - master
+  pull_request:
+    branches: 
+      - main
+      - master
+    types: [closed]
 
 jobs:
   tests:
