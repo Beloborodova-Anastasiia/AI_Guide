@@ -14,6 +14,6 @@ COPY ai_guide/ /app
 
 WORKDIR /app
 
-# ENTRYPOINT ["bash", "docker-entrypoint.sh"]
+ENTRYPOINT ["bash", "docker-entrypoint.sh"]
 
-CMD ["gunicorn", "ai_guide.wsgi:application", "--bind", "0:8000" ]
+# CMD ["gunicorn", "ai_guide.wsgi:application", "--bind", "0:8000" ]
