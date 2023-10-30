@@ -66,7 +66,7 @@ jobs:
           sudo docker image rm abeloborodova/ai_guide:v1
           touch .env
           echo OPEN_AI_API_KEY=${{ secrets.OPEN_AI_API_KEY }} >> .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+          echo DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }} >> .env
           echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
           echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
           sudo docker-compose up
