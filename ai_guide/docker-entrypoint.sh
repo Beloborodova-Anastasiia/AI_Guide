@@ -7,4 +7,4 @@ echo "Apply database migrations"
 python manage.py migrate
 
 echo "Starting server"
-gunicorn foodgram.wsgi:application --bind 0:8000
+gunicorn ai_guide.wsgi:application --bind 0:8000
