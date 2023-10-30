@@ -63,6 +63,6 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           sudo docker-compose stop
-          sudo docker-compose rm web
-          sudo docker image rm abeloborodova/ai_guide:v1
+          sudo docker-compose rm web -f
+          sudo docker image rm abeloborodova/ai_guide:v1 -f
           sudo docker-compose up -d
