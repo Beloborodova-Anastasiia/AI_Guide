@@ -48,7 +48,7 @@ jobs:
         with:
           file: ai_guide/Dockerfile
           push: true
-          tags: abeloborodova/ai_guide:latest
+          tags: abeloborodova/ai_guide:v1
 
 
   deploy:
@@ -63,7 +63,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           sudo docker-compose down
-          sudo docker pull abeloborodova/ai_guide:latest
+          sudo docker pull abeloborodova/ai_guide:v1
           touch .env
           echo OPEN_AI_API_KEY=${{ secrets.OPEN_AI_API_KEY }} >> .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
