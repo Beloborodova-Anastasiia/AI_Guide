@@ -1,16 +1,15 @@
 import json
 import os
 
+from dotenv import load_dotenv
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from dotenv import load_dotenv
-
-from utilits.open_ai import OpenAiInterract
 
 from api_attractions.consts import MESSAGE, SESTEM_MSG, TEMPERATURE
-from attractions.models import Attraction, MisspelledNames
 from api_attractions.serializers import AttractionSerializer, QuerySerializer
+from attractions.models import Attraction, MisspelledNames
+from utilits.open_ai import OpenAiInterract
 
 load_dotenv()
 
