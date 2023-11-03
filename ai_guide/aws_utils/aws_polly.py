@@ -7,14 +7,20 @@ import os
 from ai_guide.settings import MEDIA_ROOT
 
 load_dotenv()
-# AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID'),
-# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_ACCESS_KEY_ID='AKIAR7A56SB575LZCDVJ'
-AWS_SECRET_ACCESS_KEY='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'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID'),
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
 
 class AwsPollyInterract:
 
-    def get_voice(self, region_name: str, voice: str,  text: str, format: str, file: str):
+    def get_voice(
+            self,
+            region_name: str,
+            voice: str,
+            text: str,
+            format: str,
+            file: str
+    ):
         polly_client = boto3.Session(
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
@@ -22,8 +28,8 @@ class AwsPollyInterract:
 
         response = polly_client.synthesize_speech(
             VoiceId=voice,
-            OutputFormat=format, 
-            Text = text,
+            OutputFormat=format,
+            Text=text,
         )
 
         if "AudioStream" in response:
