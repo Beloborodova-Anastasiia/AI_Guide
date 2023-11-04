@@ -41,12 +41,10 @@ class OpenAiClient:
                     location=serializer.data['location'],
                     content=serializer.data['content']
                 )
-                # return response["choices"][0]['message']['content']
                 return attraction_info
-            else:
-                raise serializers.ValidationError(
-                    'Open_AI respons is not correct'
-                )
 
+            raise serializers.ValidationError(
+                'Open_AI respons is not correct'
+            )
         except Exception:
             raise Exception('No answer from Open_AI or answer is not correct')
