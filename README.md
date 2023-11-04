@@ -1,14 +1,14 @@
 # AI Audio Guide
 ![Workflow status](https://github.com/Beloborodova-Anastasiia/AI_Guide/actions/workflows/merge_master.yaml/badge.svg)
 
-This is a backend service for an mobile application telling customer stories about nearby attractions like a touristic guide. The stories are generated and sounded by AI.
+This is a backend service for an mobile application telling customer stories about nearby attractions like a touristic guide. The stories are generated and voiced by AI.
 
 ### Backend service
 - receives an attraction name from the mobile app;
 
 - asks Chat GPT (gpt-3.5-turbo) to make a text narrative about the requested attraction on behalf of touristic guide;
 
-- transforms the narrative into an audio file using AWS Polly (boto3) service (work in progress);
+- transforms the narrative into an audio file using AWS Polly (boto3) service [work in progress];
 
 - returns this file as a response to the mobile app.
 
@@ -43,7 +43,7 @@ git clone https://github.com/Beloborodova-Anastasiia/AI_Guide.git
 cd ai_guide
 ```
 
-Create env-file by template:
+Create file .env by template:
 
 ```
 OPEN_AI_API_KEY=YOUR_OPEN_AI_API_KEY
@@ -70,17 +70,18 @@ sudo docker-compose up -d --build
 
 ### API request examples
 
-Get attraction:
+Query examples:
 
+
+```bash
+curl -XPOST 'http://localhost/get_guide/' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{"query": "Eiffel Tower"}'
 ```
-POST: http://localhost/get_guide/
-```
-```
-Request body:
-{
- "query": "string"
-}
-```
+
+```powershell
+ Invoke-WebRequest -Uri  http://localhost/get_guide/ -ContentType "application/json" -Method POST -Body '{"query": "Eiffel Tower"}'
+ ```
 Response:
 ```
 {
@@ -95,5 +96,3 @@ Response:
 ### Author
 
 Anastasiia Beloborodova 
-
-anastasiia.beloborodova@gmail.com
