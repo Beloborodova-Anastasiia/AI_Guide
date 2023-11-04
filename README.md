@@ -1,4 +1,6 @@
 # AI Audio Guide
+![Workflow status](https://github.com/Beloborodova-Anastasiia/AI_Guide/actions/workflows/merge_master.yml/badge.svg
+)
 
 This is a backend service for an mobile application telling customer stories about nearby attractions like a touristic guide. The stories are generated and sounded by AI.
 
@@ -81,6 +83,7 @@ Request body:
 }
 ```
 Response:
+```
 {
   "id": int,
   "object_name": "string",
