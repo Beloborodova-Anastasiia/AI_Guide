@@ -4,7 +4,7 @@
 This is a backend service for an mobile application telling customer stories about nearby attractions like a touristic guide. The stories are generated and voiced by AI.
 
 ### Backend service
-- receives an attraction name from the mobile app;
+- receives an attraction name entered by user in the mobile app;
 
 - asks Chat GPT (gpt-3.5-turbo) to make a text narrative about the requested attraction on behalf of touristic guide;
 
@@ -14,7 +14,7 @@ This is a backend service for an mobile application telling customer stories abo
 
 #### Next steps
 
-- generate a list of attractions based on coordinates received from the user using a map service.
+- retrieve a list of attractions automatically based on user geoposition.
 
 
 
@@ -71,13 +71,14 @@ sudo docker-compose up -d --build
 
 Request examples:
 
-
+Bash:
 ```bash
 curl -XPOST 'http://localhost/get_guide/' \
   --header 'Content-Type: application/json' \
   --data-raw '{"query": "Eiffel Tower"}'
 ```
 
+PowerShell:
 ```powershell
  Invoke-WebRequest -Uri  http://localhost/get_guide/ -ContentType "application/json" -Method POST -Body '{"query": "Eiffel Tower"}'
  ```
