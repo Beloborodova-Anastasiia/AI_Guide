@@ -3,8 +3,6 @@
 
 This is a backend service for an mobile application telling customer stories about nearby attractions like a touristic guide. The stories are generated and voiced by AI.
 
-
-
 ### Backend service
 - receives an attraction name from the mobile app;
 
@@ -20,7 +18,6 @@ This is a backend service for an mobile application telling customer stories abo
 
 
 
-
 ### Technologies
 
 Python 3.10
@@ -30,7 +27,6 @@ Django 24.2
 Django REST Framework 3.14
 
 Docker 20.10.17
-
 
 
 ### Local project run:
@@ -71,7 +67,6 @@ sudo docker-compose up -d --build
 ```
 
 
-
 ### API request examples
 
 Request examples:
@@ -95,7 +90,6 @@ Response:
   "content": "string",
 }
 ```
-
 
 
 ### Author
