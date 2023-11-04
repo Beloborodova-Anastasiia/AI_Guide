@@ -12,13 +12,9 @@ This is a backend service for an mobile application telling customer stories abo
 
 - returns this file as a response to the mobile app.
 
-### Next steps
+#### Next steps
 
-- receive user location from the mobile app;
-
-- receive a list of the  nearest attractions using a map service;
-
-- send the user the list of attractions.
+- generate a list of attractions based on coordinates received from the user using a map service.
 
 
 ### Technologies
@@ -83,7 +79,7 @@ curl -XPOST 'http://localhost/get_guide/' \
  Invoke-WebRequest -Uri  http://localhost/get_guide/ -ContentType "application/json" -Method POST -Body '{"query": "Eiffel Tower"}'
  ```
 Response:
-```
+```js
 {
   "id": int,
   "object_name": "string",
