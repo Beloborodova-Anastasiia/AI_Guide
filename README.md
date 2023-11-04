@@ -69,8 +69,6 @@ sudo docker-compose up -d --build
 
 ### API request examples
 
-Request examples:
-
 Bash:
 ```bash
 curl -XPOST 'http://localhost/get_guide/' \
@@ -85,10 +83,10 @@ PowerShell:
 Response:
 ```js
 {
-  "id": int,
-  "object_name": "string",
-  "location": "string",
-  "content": "string",
+    "id": 1,
+    "object_name": "Eiffel Tower",
+    "location": "Paris, France",
+    "content": "The Eiffel Tower is located in Paris, France. It was built in 1889 and stands at a height of 330 meters. It is one of the most famous landmarks in the world and offers stunning views of the city from its observation decks."
 }
 ```
 
