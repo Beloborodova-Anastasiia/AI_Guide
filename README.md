@@ -17,6 +17,7 @@ This is a backend service for an mobile application telling customer stories abo
 - generate a list of attractions based on coordinates received from the user using a map service.
 
 
+
 ### Technologies
 
 Python 3.10
@@ -26,6 +27,7 @@ Django 24.2
 Django REST Framework 3.14
 
 Docker 20.10.17
+
 
 ### Local project run:
 
@@ -64,9 +66,10 @@ for Linux:
 sudo docker-compose up -d --build
 ```
 
+
 ### API request examples
 
-Query examples:
+Request examples:
 
 
 ```bash
