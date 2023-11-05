@@ -35,8 +35,7 @@ class AwsPollyClient:
                     output.write(stream.read())
                     output.close()
                 return output.name
-            else:
-                raise Exception('No AudioStream in response')
+            raise Exception('No AudioStream in response')
         except Exception:
             raise Exception(
                 'No answer from AWS_Polly or answer is not correct'
