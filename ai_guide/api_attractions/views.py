@@ -1,17 +1,15 @@
-from dotenv import load_dotenv
-
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
+from dotenv import load_dotenv
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from ai_guide.aws_utils.aws_polly import AwsPollyInterract
 
 from api_attractions.serializers import AttractionSerializer, QuerySerializer
 from attractions.classes import AttractionInfo
 from attractions.models import Attraction, MisspelledNames
-from open_ai_client.open_ai_client import OpenAiClient
-from api_attractions.consts import REGION_NAME, OUTPUT_FORMAT, VOICE_ID
+from clients.aws_polly_client import AwsPollyClient
+from clients.open_ai_client import OpenAiClient
 
 load_dotenv()
 
@@ -62,7 +60,6 @@ class ApiAnswers(APIView):
         )
         attraction.content = attraction_info.content
         attraction.save()
-        # self.get_awas_polly_response(attraction)
         if attraction_info.object_name != query_name:
             MisspelledNames.objects.create(
                 misspelled_name=query_name,
@@ -70,48 +67,16 @@ class ApiAnswers(APIView):
             )
         return attraction
 
-    # def get_aws_polly_response_to_attraction(self, attraction):
-    # ''' 
-    # Function for generation audio in aws_polly and save it 
-    # in model attraction field 
-    # '''
-    #     polly = AwsPollyInterract()
-    #     file_name = attraction.object_name
-    #     returned_file = polly.get_voice(
-    #         voice=VOICE_ID,
-    #         format=OUTPUT_FORMAT,
-    #         region_name=REGION_NAME,
-    #         file=f'{file_name}.{OUTPUT_FORMAT}',
-    #         text=attraction.content
-    #     )
-    
-    #     with open(returned_file, 'rb') as file:
-    #         file_for_model = File(file)
-    #         attraction.audio = file_for_model
-    #         attraction.save()
-    #         file.close()
-    #         os.remove(returned_file)
 
-    
 class GetAudio(APIView):
 
     def get(self, request, id):
         attraction = get_object_or_404(Attraction, id=id)
-        polly = AwsPollyInterract()
+        polly = AwsPollyClient()
         file_name = attraction.object_name
-        file_name = polly.get_voice(
-            voice=VOICE_ID,
-            format=OUTPUT_FORMAT,
-            region_name=REGION_NAME,
-            file=f'{file_name}.{OUTPUT_FORMAT}',
+        file_name = polly.get_audio(
+            file_name=file_name,
             text=attraction.content
         )
         file = open(file_name, 'rb')
         return FileResponse(file)
-    
-   
-
-
-        
-
-

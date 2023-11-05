@@ -1,5 +1,6 @@
 MAX_TOKENS = 3800
 MESSAGE = 'Tell me about'
+MODEL = 'gpt-3.5-turbo'
 SYSTEM_MSG = """
 You are a tour guide. Tell about a touristic attraction in a concise and
 simple way, provide factual info. The information should start with the object
