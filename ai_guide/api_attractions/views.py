@@ -1,21 +1,17 @@
 from dotenv import load_dotenv
-import json
-import os
 
-from django.core.files import File
-from django.http import FileResponse
-from django.shortcuts import get_object_or_404
-from django.core.files import File
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from ai_guide.aws_utils.aws_polly import AwsPollyInterract
 
 from api_attractions.serializers import AttractionSerializer, QuerySerializer
 from attractions.classes import AttractionInfo
 from attractions.models import Attraction, MisspelledNames
 from open_ai_client.open_ai_client import OpenAiClient
+from api_attractions.consts import REGION_NAME, OUTPUT_FORMAT, VOICE_ID
 
 load_dotenv()
 
