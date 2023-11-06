@@ -3,7 +3,6 @@ import os
 
 import openai
 from dotenv import load_dotenv
-from rest_framework import serializers
 
 from attractions.classes import AttractionInfo
 from clients.attraction_info_serializer import AttractionInfoSerializer
@@ -19,7 +18,7 @@ class OpenAiClient:
     def __init__(self) -> None:
         openai.api_key = OPEN_AI_API_KEY
 
-    def get_answer(self, query: str) -> AttractionInfo:
+    def get_answer(self, query: str) -> (bool, AttractionInfo or str):
         message = MESSAGE + f'{query}'
         try:
             response = openai.ChatCompletion.create(
@@ -40,10 +39,8 @@ class OpenAiClient:
                     location=serializer.data['location'],
                     content=serializer.data['content']
                 )
-                return attraction_info
+                return True, attraction_info
 
-            raise serializers.ValidationError(
-                'Open_AI respons is not correct'
-            )
+            return False, 'Open_AI respons is not correct'
         except Exception:
-            raise Exception('No answer from Open_AI or answer is not correct')
+            return False, 'No answer from Open_AI or answer is not correct'

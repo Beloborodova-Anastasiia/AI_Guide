@@ -1,8 +1,8 @@
 from django.urls import path
 
-from api_attractions.views import ApiAnswers, GetAudio
+from api_attractions.views import AttractionApiView, TextToVoiceConverterView
 
 urlpatterns = [
-    path('get_guide/', ApiAnswers.as_view(),),
-    path('get_audio/<id>/', GetAudio.as_view()),
+    path('get_guide/', AttractionApiView.as_view(),),
+    path('get_audio/<attraction_id>/', TextToVoiceConverterView.as_view()),
 ]

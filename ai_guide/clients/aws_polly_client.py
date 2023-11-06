@@ -15,14 +15,16 @@ AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 class AwsPollyClient:
 
-    def get_audio(self, text: str, file_name: str):
-        try:
-            polly_client = boto3.Session(
-                aws_access_key_id=AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                region_name=REGION_NAME).client('polly')
+    def __init__(self) -> None:
+        self.polly_client = boto3.Session(
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            region_name=REGION_NAME
+        ).client('polly')
 
-            response = polly_client.synthesize_speech(
+    def get_audio(self, text: str, file_name: str) -> (bool, str):
+        try:
+            response = self.polly_client.synthesize_speech(
                 VoiceId=VOICE_ID,
                 OutputFormat=OUTPUT_FORMAT,
                 Text=text,
@@ -34,9 +36,7 @@ class AwsPollyClient:
                     )
                     output.write(stream.read())
                     output.close()
-                return output.name
-            raise Exception('No AudioStream in response')
+                return True, output.name
+            return False, 'No AudioStream in response from AWS_Polly'
         except Exception:
-            raise Exception(
-                'No answer from AWS_Polly or answer is not correct'
-            )
+            return False, 'No answer from AWS_Polly or answer is not correct'
