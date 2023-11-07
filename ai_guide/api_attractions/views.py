@@ -42,14 +42,14 @@ class AttractionApiView(APIView):
                 attraction_info = open_ai_client.get_answer(
                     query_name
                 )
-                if attraction_info:
-                    attraction = self.create_attraction_obj(
-                        attraction_info, query_name
-                    )
-                else:
+                if not attraction_info:
                     return Response(
                         ERROR_MESSAGE, status=status.HTTP_400_BAD_REQUEST
                     )
+                attraction = self.create_attraction_obj(
+                    attraction_info, query_name
+                )
+
             reply_serializer = AttractionSerializer(attraction)
             return Response(reply_serializer.data)
 
@@ -85,12 +85,12 @@ class TextToVoiceConverterApiView(APIView):
         attraction = get_object_or_404(Attraction, id=attraction_id)
         try:
             file_name = attraction.object_name
-            file = aws_polly_client.get_audio(
+            stored_file_name = aws_polly_client.get_audio(
                 file_name=file_name,
                 text=attraction.content
             )
-            if file:
-                file = open(file, 'rb')
+            if stored_file_name:
+                file = open(stored_file_name, 'rb')
                 return FileResponse(file)
             error_file = open(MEDIA_ROOT + '/' + AUDIO_ERROR_MESSAGE, 'rb')
             return FileResponse(error_file)
