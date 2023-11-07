@@ -18,7 +18,7 @@ class OpenAiClient:
     def __init__(self) -> None:
         openai.api_key = OPEN_AI_API_KEY
 
-    def get_answer(self, query: str) -> (bool, AttractionInfo or str):
+    def get_answer(self, query: str) -> AttractionInfo or None:
         message = MESSAGE + f'{query}'
         try:
             response = openai.ChatCompletion.create(
@@ -39,8 +39,11 @@ class OpenAiClient:
                     location=serializer.data['location'],
                     content=serializer.data['content']
                 )
-                return True, attraction_info
+                return attraction_info
 
-            return False, 'Open_AI respons is not correct'
+            # in the future report to logger 'Open_AI respons is not correct'
+            return None
         except Exception:
-            return False, 'No answer from Open_AI or answer is not correct'
+            return None
+        # in the future report to logger
+        # 'No answer from Open_AI or answer is not correct'

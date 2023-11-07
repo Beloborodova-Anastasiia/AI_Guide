@@ -22,7 +22,7 @@ class AwsPollyClient:
             region_name=REGION_NAME
         ).client('polly')
 
-    def get_audio(self, text: str, file_name: str) -> (bool, str):
+    def get_audio(self, text: str, file_name: str) -> str or None:
         try:
             response = self.polly_client.synthesize_speech(
                 VoiceId=VOICE_ID,
@@ -36,7 +36,11 @@ class AwsPollyClient:
                     )
                     output.write(stream.read())
                     output.close()
-                return True, output.name
-            return False, 'No AudioStream in response from AWS_Polly'
+                return output.name
+            # in the future report to logger
+            # 'No AudioStream in response from AWS_Polly'
+            return None
         except Exception:
-            return False, 'No answer from AWS_Polly or answer is not correct'
+            # in the future report to logger
+            # 'No answer from AWS_Polly or answer is not correct'
+            return None

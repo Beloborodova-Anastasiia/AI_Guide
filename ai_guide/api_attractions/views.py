@@ -12,7 +12,7 @@ from attractions.models import Attraction, MisspelledNames
 from clients.aws_polly_client import AwsPollyClient
 from clients.open_ai_client import OpenAiClient
 
-from .const import ERROR_MESSAGE_FILE
+from .const import AUDIO_ERROR_MESSAGE, ERROR_MESSAGE
 
 load_dotenv()
 
@@ -39,16 +39,17 @@ class AttractionApiView(APIView):
                 attraction_misspeled = attractions_misspeled.first()
                 attraction = attraction_misspeled.attraction
             else:
-                response_status, response = open_ai_client.get_answer(
+                attraction_info = open_ai_client.get_answer(
                     query_name
                 )
-                if not response_status:
-                    return Response(
-                        response, status=status.HTTP_400_BAD_REQUEST
+                if attraction_info:
+                    attraction = self.create_attraction_obj(
+                        attraction_info, query_name
                     )
-                attraction = self.create_attraction_obj(
-                    response, query_name
-                )
+                else:
+                    return Response(
+                        ERROR_MESSAGE, status=status.HTTP_400_BAD_REQUEST
+                    )
             reply_serializer = AttractionSerializer(attraction)
             return Response(reply_serializer.data)
 
@@ -78,21 +79,21 @@ class AttractionApiView(APIView):
         return attraction
 
 
-class TextToVoiceConverterView(APIView):
+class TextToVoiceConverterApiView(APIView):
 
     def get(self, request, attraction_id):
         attraction = get_object_or_404(Attraction, id=attraction_id)
         try:
             file_name = attraction.object_name
-            response_status, response = aws_polly_client.get_audio(
+            file = aws_polly_client.get_audio(
                 file_name=file_name,
                 text=attraction.content
             )
-            if response_status:
-                file = open(response, 'rb')
+            if file:
+                file = open(file, 'rb')
                 return FileResponse(file)
-            error_file = open(MEDIA_ROOT + '/' + ERROR_MESSAGE_FILE, 'rb')
+            error_file = open(MEDIA_ROOT + '/' + AUDIO_ERROR_MESSAGE, 'rb')
             return FileResponse(error_file)
         except Exception:
-            error_file = open(MEDIA_ROOT + '/' + ERROR_MESSAGE_FILE, 'rb')
+            error_file = open(MEDIA_ROOT + '/' + AUDIO_ERROR_MESSAGE, 'rb')
             return FileResponse(error_file)
