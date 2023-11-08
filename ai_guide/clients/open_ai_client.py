@@ -3,11 +3,10 @@ import os
 
 import openai
 from dotenv import load_dotenv
-from rest_framework import serializers
 
-from api_attractions.consts import MAX_TOKENS, MESSAGE, SYSTEM_MSG, TEMPERATURE
 from attractions.classes import AttractionInfo
-from open_ai_client.serizalizers import AttractionInfoSerializer
+from clients.attraction_info_serializer import AttractionInfoSerializer
+from clients.config import MAX_TOKENS, MESSAGE, MODEL, SYSTEM_MSG, TEMPERATURE
 
 load_dotenv()
 
@@ -15,16 +14,15 @@ OPEN_AI_API_KEY = os.getenv('OPEN_AI_API_KEY')
 
 
 class OpenAiClient:
-    MODEL = 'gpt-3.5-turbo'
 
     def __init__(self) -> None:
         openai.api_key = OPEN_AI_API_KEY
 
-    def get_answer(self, query: str) -> AttractionInfo:
+    def get_answer(self, query: str) -> AttractionInfo or None:
         message = MESSAGE + f'{query}'
         try:
             response = openai.ChatCompletion.create(
-                model=self.MODEL,
+                model=MODEL,
                 messages=[
                     {"role": "system", "content": SYSTEM_MSG},
                     {"role": "user", "content": message}
@@ -43,8 +41,9 @@ class OpenAiClient:
                 )
                 return attraction_info
 
-            raise serializers.ValidationError(
-                'Open_AI respons is not correct'
-            )
+            # in the future report to logger 'Open_AI respons is not correct'
+            return None
         except Exception:
-            raise Exception('No answer from Open_AI or answer is not correct')
+            return None
+        # in the future report to logger
+        # 'No answer from Open_AI or answer is not correct'

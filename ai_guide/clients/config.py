@@ -1,5 +1,6 @@
 MAX_TOKENS = 3800
 MESSAGE = 'Tell me about'
+MODEL = 'gpt-3.5-turbo'
 SYSTEM_MSG = """
 You are a tour guide. Tell about a touristic attraction in a concise and
 simple way, provide factual info. The information should start with the object
@@ -15,3 +16,7 @@ content: "",
 '''
 """
 TEMPERATURE = 0.6
+REGION_NAME = 'eu-west-2'
+VOICE_ID = 'Brian'
+OUTPUT_FORMAT = 'mp3'
+MEDIA_PATH = 'media/audio/'
