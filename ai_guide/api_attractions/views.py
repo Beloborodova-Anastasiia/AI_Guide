@@ -83,17 +83,17 @@ class TextToVoiceConverterApiView(APIView):
 
     def get(self, request, attraction_id):
         attraction = get_object_or_404(Attraction, id=attraction_id)
-        try:
-            file_name = attraction.object_name
-            stored_file_name = aws_polly_client.get_audio(
-                file_name=file_name,
-                text=attraction.content
-            )
-            if stored_file_name:
+        file_name = attraction.object_name
+        stored_file_name = aws_polly_client.get_audio(
+            file_name=file_name,
+            text=attraction.content
+        )
+        if stored_file_name:
+            try:
                 file = open(stored_file_name, 'rb')
                 return FileResponse(file)
-            error_file = open(MEDIA_ROOT + '/' + AUDIO_ERROR_MESSAGE, 'rb')
-            return FileResponse(error_file)
-        except Exception:
-            error_file = open(MEDIA_ROOT + '/' + AUDIO_ERROR_MESSAGE, 'rb')
-            return FileResponse(error_file)
+            except Exception:
+                # TODO log error
+                pass
+        error_file = open(MEDIA_ROOT + '/' + AUDIO_ERROR_MESSAGE, 'rb')
+        return FileResponse(error_file)

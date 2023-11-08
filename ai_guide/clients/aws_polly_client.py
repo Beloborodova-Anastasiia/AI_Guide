@@ -37,10 +37,8 @@ class AwsPollyClient:
                     output.write(stream.read())
                     output.close()
                 return output.name
-            # in the future report to logger
-            # 'No AudioStream in response from AWS_Polly'
+            # TODO log 'No AudioStream in response from AWS_Polly'
             return None
         except Exception:
-            # in the future report to logger
-            # 'No answer from AWS_Polly or answer is not correct'
+            # TODO log 'No answer from AWS_Polly or answer is not correct'
             return None
