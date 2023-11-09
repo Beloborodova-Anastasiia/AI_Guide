@@ -11,8 +11,9 @@ services:
   web:
     image: abeloborodova/ai_guide:v1
     restart: always
-    ports:
-     - "8000:8000"
+    volumes:
+      - static_value:/app/static/
+      - media_value:/app/media/
     depends_on:
       - db
     env_file:
