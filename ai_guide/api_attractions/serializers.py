@@ -24,3 +24,7 @@ class AttractionSerializer(serializers.ModelSerializer):
             'location',
             'content',
         )
+
+
+class AttractionListSerializer(serializers.Serializer):
+    places = AttractionSerializer(many=True)
