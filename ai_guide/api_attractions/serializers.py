@@ -4,12 +4,20 @@ from attractions.models import Attraction
 
 
 class QuerySerializer(serializers.Serializer):
-    query = serializers.CharField(max_length=256)
+    name = serializers.CharField(max_length=256)
+    location = serializers.CharField(max_length=256)
 
-    def validate_query(self, obj):
+    def validate_name(self, obj):
         if len(obj) > 256:
             raise serializers.ValidationError(
-                'You query is too long'
+                'You name is too long'
+            )
+        return obj
+
+    def validate_location(self, obj):
+        if len(obj) > 256:
+            raise serializers.ValidationError(
+                'You location is too long'
             )
         return obj
 
