@@ -29,8 +29,8 @@ class AttractionApiView(APIView):
             query_name = query_serializer.data['name']
             query_location = query_serializer.data['location']
             attractions = Attraction.objects.filter(
-                object_name=query_name,
-                location=query_location
+                object_name_iexact=query_name,
+                location_iexact=query_location
             )
             if attractions.exists():
                 attraction = attractions.first()
