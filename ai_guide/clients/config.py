@@ -17,7 +17,7 @@ content: "",
 }
 '''
 """
-TEMPERATURE = 0.3
+TEMPERATURE = 0.8
 REGION_NAME = 'eu-west-2'
 VOICE_ID = 'Brian'
 OUTPUT_FORMAT = 'mp3'
