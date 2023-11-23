@@ -28,10 +28,10 @@ class AttractionApiView(APIView):
         if query_serializer.is_valid():
             query_name = query_serializer.data['query']
             attractions = Attraction.objects.filter(
-                object_name=query_name
+                object_name__iexact=query_name
             )
             attractions_misspeled = MisspelledNames.objects.filter(
-                misspelled_name=query_name
+                misspelled_name__iexact=query_name
             )
             if attractions.exists():
                 attraction = attractions.first()
