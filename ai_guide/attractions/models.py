@@ -6,7 +6,6 @@ class Attraction(models.Model):
         max_length=256,
         db_index=True,
         verbose_name='Name',
-        unique=True
     )
     location = models.CharField(
         max_length=256,
@@ -19,3 +18,12 @@ class Attraction(models.Model):
 
     def __str__(self):
         return self.object_name
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['object_name', 'location'],
+                name='unique attraction'
+            )
+        ]
+
