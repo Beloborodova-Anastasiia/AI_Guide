@@ -16,8 +16,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '10.0.2.2',
-    '13.43.86.146',
-    '172.31.47.42',
+    os.getenv('PUBLIC_IP_ADRESS'),
+    os.getenv('PRIVATE_IP_ADRESS'),
     'web'
 ]
 
