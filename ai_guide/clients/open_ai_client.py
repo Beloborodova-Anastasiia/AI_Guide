@@ -31,7 +31,10 @@ class OpenAiClient:
                 max_tokens=MAX_TOKENS
             )
             serializer = AttractionInfoSerializer(
-                data=json.loads(response["choices"][0]['message']['content'])
+                data=json.loads(
+                    response["choices"][0]['message']['content'],
+                    strict=False
+                )
             )
             if serializer.is_valid():
                 attraction_info = AttractionInfo(
