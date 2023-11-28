@@ -26,21 +26,3 @@ class Attraction(models.Model):
                 name='unique attraction'
             )
         ]
-
-
-class MisspelledNames(models.Model):
-    misspelled_name = models.CharField(
-        max_length=254,
-        unique=True,
-        db_index=True,
-        verbose_name='Misspelled name',
-    )
-    attraction = models.ForeignKey(
-        Attraction,
-        on_delete=models.CASCADE,
-        related_name='attraction',
-        verbose_name='Attraction',
-    )
-
-    def __str__(self):
-        return self.misspelled_name

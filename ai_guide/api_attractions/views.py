@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from ai_guide.settings import MEDIA_ROOT
 from api_attractions.serializers import AttractionSerializer, QuerySerializer
 from attractions.classes import AttractionInfo
-from attractions.models import Attraction, MisspelledNames
+from attractions.models import Attraction
 from clients.aws_polly_client import AwsPollyClient
 from clients.open_ai_client import OpenAiClient
 
@@ -26,21 +26,17 @@ class AttractionApiView(APIView):
         query_serializer = QuerySerializer(data=request.data)
 
         if query_serializer.is_valid():
-            query_name = query_serializer.data['query']
+            query_name = query_serializer.data['name']
+            query_location = query_serializer.data['location']
             attractions = Attraction.objects.filter(
-                object_name__iexact=query_name
-            )
-            attractions_misspeled = MisspelledNames.objects.filter(
-                misspelled_name__iexact=query_name
+                object_name__iexact=query_name,
+                location__iexact=query_location
             )
             if attractions.exists():
                 attraction = attractions.first()
-            elif attractions_misspeled.exists():
-                attraction_misspeled = attractions_misspeled.first()
-                attraction = attraction_misspeled.attraction
             else:
                 attraction_info = open_ai_client.get_answer(
-                    query_name
+                    query_name + query_location
                 )
                 if not attraction_info:
                     return Response(
@@ -71,11 +67,6 @@ class AttractionApiView(APIView):
         )
         attraction.content = attraction_info.content
         attraction.save()
-        if attraction_info.object_name != query_name:
-            MisspelledNames.objects.create(
-                misspelled_name=query_name,
-                attraction=attraction
-            )
         return attraction
 
 
