@@ -26,4 +26,3 @@ class Attraction(models.Model):
                 name='unique attraction'
             )
         ]
-
