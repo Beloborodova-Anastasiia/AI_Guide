@@ -10,14 +10,14 @@ class QuerySerializer(serializers.Serializer):
     def validate_name(self, obj):
         if len(obj) > 256:
             raise serializers.ValidationError(
-                'You name is too long'
+                'Your name is too long'
             )
         return obj
 
     def validate_location(self, obj):
         if len(obj) > 256:
             raise serializers.ValidationError(
-                'You location is too long'
+                'Your location is too long'
             )
         return obj
 
