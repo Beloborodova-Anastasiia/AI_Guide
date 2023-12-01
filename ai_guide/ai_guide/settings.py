@@ -22,7 +22,7 @@ ALLOWED_HOSTS = [
 ]
 
 DOMEIN = os.getenv('PUBLIC_IP_ADRESS')
-CSRF_TRUSTED_ORIGINS = ['https://*.{DOMEIN}', 'https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://*.{DOMEIN}', 'http://*.127.0.0.1']
 
 # Application definition
 
