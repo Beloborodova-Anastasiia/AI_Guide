@@ -21,10 +21,10 @@ ALLOWED_HOSTS = [
     'web'
 ]
 
-DOMEIN = os.getenv('PUBLIC_IP_ADRESS')
-CSRF_TRUSTED_ORIGINS = ['http://*.{DOMEIN}', 'http://*.127.0.0.1']
-CSRF_COOKIE_SECURE = False
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
+# DOMEIN = os.getenv('PUBLIC_IP_ADRESS')
+# CSRF_TRUSTED_ORIGINS = ['http://*.{DOMEIN}', 'http://*.127.0.0.1']
+# CSRF_COOKIE_SECURE = False
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
 
 # Application definition
 
