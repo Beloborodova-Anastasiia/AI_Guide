@@ -23,6 +23,7 @@ ALLOWED_HOSTS = [
 
 DOMEIN = os.getenv('PUBLIC_IP_ADRESS')
 CSRF_TRUSTED_ORIGINS = ['http://*.{DOMEIN}', 'http://*.127.0.0.1']
+CSRF_COOKIE_SECURE=False
 
 # Application definition
 
