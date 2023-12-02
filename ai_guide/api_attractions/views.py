@@ -43,7 +43,7 @@ class AttractionApiView(APIView):
                         ERROR_MESSAGE, status=status.HTTP_400_BAD_REQUEST
                     )
                 attraction = self.create_attraction_obj(
-                    attraction_info, query_name
+                    attraction_info, query_name, query_location
                 )
 
             reply_serializer = AttractionSerializer(attraction)
@@ -55,15 +55,18 @@ class AttractionApiView(APIView):
         )
 
     def create_attraction_obj(
-            self, attraction_info: AttractionInfo, query_name: str
+            self,
+            attraction_info: AttractionInfo,
+            query_name: str,
+            query_location: str,
     ) -> Attraction:
         Attraction.objects.get_or_create(
-            object_name=attraction_info.object_name,
-            location=attraction_info.location,
+            object_name=query_name,
+            location=query_location,
         )
         attraction = Attraction.objects.get(
-            object_name=attraction_info.object_name,
-            location=attraction_info.location,
+            object_name=query_name,
+            location=query_location,
         )
         attraction.content = attraction_info.content
         attraction.save()
