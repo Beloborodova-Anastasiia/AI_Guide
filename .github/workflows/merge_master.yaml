@@ -65,5 +65,6 @@ jobs:
           sudo docker-compose stop web
           sudo docker-compose rm -f web
           sudo docker image rm abeloborodova/ai_guide:v1
+          sudo docker pull abeloborodova/ai_guide:v1
           sudo docker-compose up -d web
           
