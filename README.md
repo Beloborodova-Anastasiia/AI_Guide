@@ -1,4 +1,4 @@
-# AI Audio Guide
+# AI Guide Backend
 ![Workflow status](https://github.com/Beloborodova-Anastasiia/AI_Guide/actions/workflows/merge_master.yaml/badge.svg)
 
 This is a backend service for an mobile application telling customer stories about nearby attractions like a touristic guide. The stories are generated and voiced by AI.
@@ -46,6 +46,8 @@ Create file .env by template:
 ```
 OPEN_AI_API_KEY=YOUR_OPEN_AI_API_KEY
 DJANGO_SECRET_KEY=YOUR_DJANGO_SECRET_KEY
+AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=postgres
 POSTGRES_USER=postgres

@@ -25,7 +25,7 @@ DOMAIN = os.getenv('PUBLIC_IP_ADRESS')
 CORS_ALLOWED_ORIGINS = [
     'http://{DOMAIN}',
 ]
-CSRF_TRUSTED_ORIGINS = ['http://{DOMAIN}', 'http://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = [os.getenv('PUBLIC_IP_ADRESS'), 'http://127.0.0.1']
 
 # Application definition
 
