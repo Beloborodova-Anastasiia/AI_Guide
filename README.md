@@ -1,7 +1,7 @@
 # AI Guide Backend
 ![Workflow status](https://github.com/Beloborodova-Anastasiia/AI_Guide/actions/workflows/merge_master.yaml/badge.svg)
 
-This is a mobile application telling customer stories about nearby attractions like a tourist guide. The stories are generated and voiced by AI. The project consists of a backend service and mobile applications for Android.
+This is a backend service for a mobile application telling customer stories about nearby attractions like a tourist guide. The stories are generated and voiced by AI. The project consists of a backend service and mobile applications for Android.
 
 ### Backend service
 - receives an attraction name entered by user in the mobile app;
